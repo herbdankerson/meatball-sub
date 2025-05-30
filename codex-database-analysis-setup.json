@@ -1,0 +1,209 @@
+{
+  "project": "DABOTMAN Database Analysis Pipeline",
+  "codex_setup": {
+    "environment_name": "dabotman-analysis",
+    "github_repo": "https://github.com/yourusername/dabotmanweb",
+    "branch": "main"
+  },
+  
+  "environment_variables": {
+    "description": "Set these in Codex environment setup script",
+    "database": {
+      "DB_HOST": "localhost",
+      "DB_PORT": "5432",
+      "DB_USER": "supabase",
+      "DB_PASSWORD": "your-super-secret-password",
+      "DB_NAME": "test_system_db"
+    },
+    "api_keys": {
+      "OPENAI_API_KEY": "sk-proj-...",
+      "ANTHROPIC_API_KEY": "sk-ant-api03-...",
+      "VOYAGE_API_KEY": "pa-...",
+      "GOOGLE_API_KEY": "AIzaSy...",
+      "GEMINI_API_KEY": "AIzaSy..."
+    },
+    "tool_paths": {
+      "TOOL_SCHEMA_EXTRACTOR": "./tools/schema_extractor.py",
+      "TOOL_NER_ANALYZER": "./tools/ner_analyzer.py",
+      "TOOL_EMBEDDER": "./tools/embedder.py",
+      "TOOL_GRAPH_BUILDER": "./tools/graph_builder.py",
+      "TOOL_REPORT_GENERATOR": "./tools/report_generator.py"
+    },
+    "services": {
+      "QDRANT_URL": "http://localhost:6333",
+      "TIGERGRAPH_URL": "http://localhost:14240",
+      "TERMINUSDB_URL": "http://localhost:6363",
+      "MCP_SERVER_URL": "http://localhost:5002"
+    }
+  },
+  
+  "requirements_txt": {
+    "content": [
+      "# Core dependencies",
+      "psycopg2-binary==2.9.9",
+      "sqlalchemy==2.0.23",
+      "pydantic==2.5.0",
+      "fastapi==0.104.1",
+      "uvicorn==0.24.0",
+      "",
+      "# NLP and ML",
+      "spacy==3.7.2",
+      "transformers==4.36.0",
+      "sentence-transformers==2.2.2",
+      "torch==2.1.0",
+      "",
+      "# Vector and Graph",
+      "qdrant-client==1.7.0",
+      "networkx==3.2",
+      "pyvis==0.3.2",
+      "",
+      "# Document processing",
+      "pymupdf4llm==0.0.5",
+      "pandas==2.1.4",
+      "numpy==1.26.2",
+      "",
+      "# API clients",
+      "openai==1.6.0",
+      "anthropic==0.8.0",
+      "requests==2.31.0",
+      "",
+      "# Utilities",
+      "python-dotenv==1.0.0",
+      "click==8.1.7",
+      "rich==13.7.0",
+      "tqdm==4.66.1"
+    ]
+  },
+  
+  "setup_script": {
+    "description": "Run this in Codex environment setup",
+    "commands": [
+      "# Install requirements",
+      "pip install -r requirements.txt",
+      "",
+      "# Download spaCy model",
+      "python -m spacy download en_core_web_trf",
+      "",
+      "# Create necessary directories",
+      "mkdir -p tools workspace output logs",
+      "",
+      "# Set up database connections",
+      "python -c \"import psycopg2; conn = psycopg2.connect(host='$DB_HOST', port='$DB_PORT', user='$DB_USER', password='$DB_PASSWORD', database='$DB_NAME'); print('Database connection successful'); conn.close()\"",
+      "",
+      "# Verify API connections",
+      "python -c \"import requests; print('Qdrant:', requests.get('$QDRANT_URL/health').status_code == 200)\"",
+      "",
+      "echo 'Setup complete!'"
+    ]
+  },
+  
+  "pipeline_definition": {
+    "name": "database_analysis_pipeline",
+    "description": "Complete database analysis with NER, embeddings, and graph generation",
+    "initial_data": {
+      "databases": ["test_system_db", "test_workspace_db", "test_analytics_db"],
+      "output_format": "comprehensive"
+    },
+    "steps": [
+      {
+        "tool": "schema_extractor",
+        "params": {
+          "extract_relationships": true,
+          "include_functions": true,
+          "include_triggers": true,
+          "output_graph_format": true
+        }
+      },
+      {
+        "tool": "ner_analyzer",
+        "params": {
+          "targets": ["table_names", "column_names", "function_names", "comments"],
+          "entity_types": ["SYSTEM", "DOMAIN", "TECHNICAL", "BUSINESS"],
+          "model": "en_core_web_trf"
+        }
+      },
+      {
+        "tool": "embedder",
+        "params": {
+          "model": "voyage-code-3",
+          "targets": ["schemas", "tables", "columns", "functions"],
+          "batch_size": 128,
+          "store_in_qdrant": true
+        }
+      },
+      {
+        "tool": "graph_builder",
+        "params": {
+          "graph_type": "knowledge_graph",
+          "include_relationships": true,
+          "export_formats": ["cytoscape", "graphml", "tigergraph"],
+          "visualize": true
+        }
+      },
+      {
+        "tool": "report_generator",
+        "params": {
+          "sections": ["overview", "schema_analysis", "entity_extraction", "embeddings", "graph_visualization"],
+          "format": "markdown",
+          "include_recommendations": true
+        }
+      }
+    ]
+  },
+  
+  "codex_prompts": {
+    "database_simulator_prompt": "CRITICAL: First create a database_simulator.py that:\n1. Uses the provided database-simulator.sql to set up test databases\n2. Implements a cron-like scheduler that calls check_scheduled_jobs() every minute\n3. Creates a mock command queue processor that polls get_next_job()\n4. Simulates the complete execution flow with proper status updates\n5. Verifies output EXACTLY matches the SQL schema structures\n\nCOMPARE every database operation against database-simulator.sql to ensure 100% accuracy.",
+    
+    "implementation_prompt": "Using the pipeline_definition AND database-simulator.sql as reference, implement all 5 tools. CRITICAL REQUIREMENTS:\n1. Each tool MUST read JSON from sys.argv[1] - NO EXCEPTIONS\n2. Each tool MUST output JSON to stdout - NO PRINT STATEMENTS\n3. Each tool MUST validate against the exact schema in tool_registry table\n4. Each tool MUST update command_queue status using complete_job()\n5. Each tool MUST record storage locations using record_storage_location()\n\nBEFORE WRITING ANY CODE: Read database-simulator.sql and verify your implementation matches EXACTLY.",
+    
+    "validation_prompt": "Create test_validator.py that:\n1. Connects to test databases created by simulator\n2. Verifies all tables match database-simulator.sql EXACTLY\n3. Tests each tool's output against expected JSON schema\n4. Validates command_queue state transitions: pending→executing→completed\n5. Checks storage_locations are properly recorded\n6. FAILS IMMEDIATELY if any deviation from SQL schema is detected\n\nRun this after EVERY tool implementation to ensure compliance.",
+    
+    "integration_prompt": "Create main.py that STRICTLY follows the execution flow:\n1. Call get_next_job() to fetch work\n2. Execute the appropriate tool based on command_type\n3. Store results EXACTLY as specified in output_destinations\n4. Call complete_job() with results or errors\n5. Record ALL storage locations\n6. Continue polling for next job\n\nVERIFY against database-simulator.sql that all function calls match signatures EXACTLY.",
+    
+    "testing_suite_prompt": "Create comprehensive tests that:\n1. Set up test database using database-simulator.sql\n2. Insert test jobs into command_queue\n3. Run each tool and verify outputs\n4. Check database state matches expected results\n5. Validate cron scheduler creates jobs on schedule\n6. Test failure scenarios and retry logic\n\nEVERY test MUST compare results against the SQL schema - NO DEVIATIONS ALLOWED."
+  },
+  
+  "execution_instructions": {
+    "step1": "Copy this JSON to your Codex Project",
+    "step2": "Run: 'Implement all tools from pipeline_definition with full functionality'",
+    "step3": "Run: 'Create main.py to execute the pipeline end-to-end'",
+    "step4": "Run: 'Add error handling, logging, and retry logic to all tools'",
+    "step5": "Run: 'Generate comprehensive tests for each tool'",
+    "step6": "Push to dabotmanweb repo branch 'feature/db-analysis-pipeline'",
+    "step7": "I'll pull and verify the implementation"
+  },
+  
+  "expected_outputs": {
+    "tools/": {
+      "schema_extractor.py": "Extracts complete database schema",
+      "ner_analyzer.py": "Performs NER on database elements",
+      "embedder.py": "Generates and stores embeddings",
+      "graph_builder.py": "Creates knowledge graph",
+      "report_generator.py": "Generates analysis report"
+    },
+    "main.py": "Pipeline runner implementation",
+    "requirements.txt": "All dependencies",
+    "setup.py": "Package setup if needed",
+    "tests/": "Comprehensive test suite",
+    "README.md": "Usage documentation"
+  },
+  
+  "sample_execution": {
+    "command": "python main.py",
+    "expected_output": {
+      "logs": "Step-by-step execution logs",
+      "outputs": {
+        "schema_extraction.json": "Complete schema data",
+        "entities.json": "Extracted named entities",
+        "embeddings.json": "Generated embeddings metadata",
+        "graph.cytoscape.json": "Graph visualization data",
+        "analysis_report.md": "Final comprehensive report"
+      },
+      "storage": {
+        "qdrant": "Embeddings stored in collections",
+        "tigergraph": "Graph data imported",
+        "files": "All outputs in ./output/"
+      }
+    }
+  }
+}

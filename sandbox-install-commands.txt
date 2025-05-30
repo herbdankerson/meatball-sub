@@ -1,0 +1,60 @@
+# Commands to paste directly into Codex sandbox to install dependencies
+
+# Option 1: Install everything individually
+pip install psycopg2-binary==2.9.9 sqlalchemy==2.0.23 pydantic==2.5.0 fastapi==0.104.1 uvicorn==0.24.0 spacy==3.7.2 transformers==4.36.0 sentence-transformers==2.2.2 torch==2.1.0 qdrant-client==1.7.0 networkx==3.2 pyvis==0.3.2 pymupdf4llm==0.0.5 pandas==2.1.4 numpy==1.26.2 openai==1.6.0 anthropic==0.8.0 requests==2.31.0 python-dotenv==1.0.0 click==8.1.7 rich==13.7.0 tqdm==4.66.1
+
+# Option 2: Create requirements.txt in sandbox first, then install
+cat > requirements.txt << 'EOF'
+psycopg2-binary==2.9.9
+sqlalchemy==2.0.23
+pydantic==2.5.0
+fastapi==0.104.1
+uvicorn==0.24.0
+spacy==3.7.2
+transformers==4.36.0
+sentence-transformers==2.2.2
+torch==2.1.0
+qdrant-client==1.7.0
+networkx==3.2
+pyvis==0.3.2
+pymupdf4llm==0.0.5
+pandas==2.1.4
+numpy==1.26.2
+openai==1.6.0
+anthropic==0.8.0
+requests==2.31.0
+python-dotenv==1.0.0
+click==8.1.7
+rich==13.7.0
+tqdm==4.66.1
+EOF
+
+pip install -r requirements.txt
+
+# Option 3: Use a single pip install with line continuation
+pip install \
+  psycopg2-binary==2.9.9 \
+  sqlalchemy==2.0.23 \
+  pydantic==2.5.0 \
+  fastapi==0.104.1 \
+  uvicorn==0.24.0 \
+  spacy==3.7.2 \
+  transformers==4.36.0 \
+  sentence-transformers==2.2.2 \
+  torch==2.1.0 \
+  qdrant-client==1.7.0 \
+  networkx==3.2 \
+  pyvis==0.3.2 \
+  pymupdf4llm==0.0.5 \
+  pandas==2.1.4 \
+  numpy==1.26.2 \
+  openai==1.6.0 \
+  anthropic==0.8.0 \
+  requests==2.31.0 \
+  python-dotenv==1.0.0 \
+  click==8.1.7 \
+  rich==13.7.0 \
+  tqdm==4.66.1
+
+# After any of the above, download spaCy model:
+python -m spacy download en_core_web_trf

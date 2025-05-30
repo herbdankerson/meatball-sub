@@ -1,0 +1,319 @@
+{
+  "adk_integration_tasks": {
+    "adk_core_components": {
+      "description": "Complete Google ADK integration with all capabilities",
+      "files_to_create": {
+        "adk/adk_gateway.py": "Main ADK gateway handling all Google AI services",
+        "adk/vertex_ai_manager.py": "Vertex AI model management and deployment",
+        "adk/gemini_function_caller.py": "Gemini function calling implementation",
+        "adk/google_search_tool.py": "Enhanced Google Search with ADK",
+        "adk/workspace_integrator.py": "Google Workspace integration (Docs, Sheets, Drive)",
+        "adk/palm_api_wrapper.py": "PaLM API integration for embeddings",
+        "adk/imagen_generator.py": "Imagen for image generation",
+        "adk/chirp_transcriber.py": "Chirp for speech transcription",
+        "adk/translation_tool.py": "Google Translate integration"
+      },
+      "requirements": [
+        "Full Vertex AI integration with all Gemini models",
+        "Support for Gemini 2.5 Pro, Flash, and Ultra",
+        "Function calling with automatic tool discovery",
+        "Streaming responses for long operations",
+        "Batch processing for efficiency",
+        "Cost tracking per request",
+        "Automatic retry with exponential backoff"
+      ]
+    },
+    
+    "adk_mcp_server": {
+      "description": "Enhanced MCP server with full ADK capabilities",
+      "files_to_create": {
+        "adk/mcp_adk_server.py": "MCP server exposing all ADK tools",
+        "adk/tool_manifest.json": "Complete ADK tool manifest",
+        "adk/auth_manager.py": "Handle ADC and service account auth",
+        "adk/session_state.py": "Maintain conversation context",
+        "adk/streaming_handler.py": "Stream responses from Gemini"
+      },
+      "requirements": [
+        "Expose ALL ADK capabilities via MCP protocol",
+        "Support both ADC and service account authentication",
+        "Implement proper session management",
+        "Handle streaming for real-time responses",
+        "Compatible with Claude Desktop config"
+      ]
+    },
+    
+    "adk_specialized_tools": {
+      "description": "Specialized ADK tools for specific use cases",
+      "files_to_create": {
+        "adk/tools/code_generator.py": "Generate code using Gemini",
+        "adk/tools/doc_analyzer.py": "Analyze documents with Document AI",
+        "adk/tools/vision_analyzer.py": "Analyze images with Vision API",
+        "adk/tools/video_analyzer.py": "Process videos with Video AI",
+        "adk/tools/speech_synthesizer.py": "Text-to-speech with natural voices",
+        "adk/tools/entity_extractor.py": "Extract entities using Natural Language API",
+        "adk/tools/sentiment_analyzer.py": "Sentiment analysis tool",
+        "adk/tools/translation_pipeline.py": "Multi-language translation pipeline"
+      },
+      "requirements": [
+        "Each tool follows the pipeline pattern (JSON in/out)",
+        "Register in tool_registry with proper schemas",
+        "Include rate limiting and quota management",
+        "Support batch operations where applicable"
+      ]
+    },
+    
+    "adk_database_tools": {
+      "description": "ADK tools specifically for database operations",
+      "files_to_create": {
+        "adk/db/schema_analyzer.py": "Analyze database schemas with Gemini",
+        "adk/db/query_optimizer.py": "Optimize SQL queries using AI",
+        "adk/db/migration_generator.py": "Generate migrations with Gemini",
+        "adk/db/test_data_generator.py": "Generate realistic test data",
+        "adk/db/documentation_generator.py": "Auto-document database schemas"
+      },
+      "requirements": [
+        "Integrate with existing database tools",
+        "Use Gemini for intelligent analysis",
+        "Generate production-ready code",
+        "Follow database-simulator.sql patterns"
+      ]
+    },
+    
+    "adk_workflow_components": {
+      "description": "ADK components for workflow automation",
+      "files_to_create": {
+        "adk/workflows/agent_orchestrator.py": "Multi-agent orchestration with Gemini",
+        "adk/workflows/task_planner.py": "AI-powered task planning",
+        "adk/workflows/decision_engine.py": "Complex decision making with AI",
+        "adk/workflows/chain_builder.py": "Build LangChain-style chains",
+        "adk/workflows/memory_manager.py": "Long-term memory for agents"
+      },
+      "requirements": [
+        "Support complex multi-step workflows",
+        "Implement memory and context management",
+        "Enable agent collaboration",
+        "Track decisions and reasoning"
+      ]
+    },
+    
+    "adk_monitoring_tools": {
+      "description": "ADK-specific monitoring and observability",
+      "files_to_create": {
+        "adk/monitoring/usage_tracker.py": "Track ADK API usage",
+        "adk/monitoring/cost_analyzer.py": "Analyze and predict costs",
+        "adk/monitoring/performance_monitor.py": "Monitor model performance",
+        "adk/monitoring/quota_manager.py": "Manage API quotas",
+        "adk/monitoring/alert_system.py": "Alert on issues or limits"
+      },
+      "requirements": [
+        "Real-time usage tracking",
+        "Cost prediction and optimization",
+        "Performance metrics per model",
+        "Automatic quota management"
+      ]
+    },
+    
+    "adk_configuration": {
+      "description": "ADK configuration and setup",
+      "files_to_create": {
+        "adk/config/adk_config.yaml": "Complete ADK configuration",
+        "adk/config/model_configs.json": "Model-specific configurations",
+        "adk/config/service_account_manager.py": "Manage service accounts",
+        "adk/config/project_setup.py": "Setup Google Cloud projects",
+        "adk/config/api_enabler.py": "Enable required APIs automatically"
+      },
+      "example_config": {
+        "vertex_ai": {
+          "project": "${GOOGLE_CLOUD_PROJECT}",
+          "location": "us-central1",
+          "models": {
+            "gemini-2.5-pro": {
+              "temperature": 0.7,
+              "max_tokens": 8192,
+              "top_p": 0.95
+            },
+            "gemini-2.5-flash": {
+              "temperature": 0.9,
+              "max_tokens": 4096
+            }
+          }
+        },
+        "apis": {
+          "search": {"enabled": true, "cx": "${GOOGLE_SEARCH_CX}"},
+          "vision": {"enabled": true},
+          "translate": {"enabled": true},
+          "speech": {"enabled": true}
+        }
+      }
+    },
+    
+    "adk_litellm_integration": {
+      "description": "Integrate ADK with LiteLLM gateway",
+      "files_to_create": {
+        "adk/litellm/adk_provider.py": "ADK provider for LiteLLM",
+        "adk/litellm/model_mapper.py": "Map ADK models to LiteLLM",
+        "adk/litellm/function_converter.py": "Convert function calls",
+        "adk/litellm/streaming_adapter.py": "Adapt streaming responses"
+      },
+      "litellm_config_addition": {
+        "model_list": [
+          {
+            "model_name": "gemini-2.5-pro",
+            "litellm_params": {
+              "model": "vertex_ai/gemini-2.5-pro-preview",
+              "vertex_project": "os.environ/GOOGLE_CLOUD_PROJECT",
+              "vertex_location": "us-central1",
+              "adc_path": "os.environ/GOOGLE_APPLICATION_CREDENTIALS"
+            }
+          },
+          {
+            "model_name": "gemini-2.5-flash",
+            "litellm_params": {
+              "model": "vertex_ai/gemini-2.5-flash-preview",
+              "vertex_project": "os.environ/GOOGLE_CLOUD_PROJECT",
+              "vertex_location": "us-central1"
+            }
+          },
+          {
+            "model_name": "palm-2",
+            "litellm_params": {
+              "model": "vertex_ai/text-bison",
+              "vertex_project": "os.environ/GOOGLE_CLOUD_PROJECT"
+            }
+          }
+        ]
+      }
+    }
+  },
+  
+  "adk_tool_registration": {
+    "description": "All ADK tools to register in tool_registry",
+    "tools": [
+      {
+        "tool_id": "adk_gemini_chat",
+        "name": "Gemini Chat",
+        "description": "Chat with Gemini models",
+        "gateway_type": "adk"
+      },
+      {
+        "tool_id": "adk_google_search",
+        "name": "Google Search",
+        "description": "Enhanced Google search with ADK",
+        "gateway_type": "adk"
+      },
+      {
+        "tool_id": "adk_vision_analyze",
+        "name": "Vision Analyzer",
+        "description": "Analyze images with Google Vision",
+        "gateway_type": "adk"
+      },
+      {
+        "tool_id": "adk_document_ai",
+        "name": "Document AI",
+        "description": "Extract data from documents",
+        "gateway_type": "adk"
+      },
+      {
+        "tool_id": "adk_translate",
+        "name": "Translator",
+        "description": "Translate text between languages",
+        "gateway_type": "adk"
+      },
+      {
+        "tool_id": "adk_speech_to_text",
+        "name": "Speech Transcriber",
+        "description": "Transcribe audio to text",
+        "gateway_type": "adk"
+      },
+      {
+        "tool_id": "adk_text_to_speech",
+        "name": "Speech Synthesizer",
+        "description": "Convert text to natural speech",
+        "gateway_type": "adk"
+      },
+      {
+        "tool_id": "adk_code_generator",
+        "name": "Code Generator",
+        "description": "Generate code with Gemini",
+        "gateway_type": "adk"
+      },
+      {
+        "tool_id": "adk_imagen",
+        "name": "Image Generator",
+        "description": "Generate images with Imagen",
+        "gateway_type": "adk"
+      }
+    ]
+  },
+  
+  "adk_mcp_litellm_research_prompt": "CRITICAL RESEARCH AND IMPLEMENTATION TASK:\n\n1. RESEARCH these integration patterns:\n   - Google ADK MCP Tools: https://google.github.io/adk-docs/tools/mcp-tools/\n   - LiteLLM Vertex AI docs: https://docs.litellm.ai/docs/providers/vertex\n   - MCP Protocol spec: https://github.com/modelcontextprotocol/specification\n   - Claude Desktop MCP config: Research how claude_desktop_config.json works\n\n2. SIMULATE AND TEST each integration step:\n   a) ADK → MCP: Create test harness that simulates ADK tool calls via MCP\n   b) MCP → LiteLLM: Test MCP server exposing tools to LiteLLM gateway\n   c) LiteLLM → Claude/Others: Verify all models can call ADK tools\n   d) End-to-end: Claude calls ADK tool via MCP through LiteLLM\n\n3. CREATE these integration components:\n   - adk/research/integration_simulator.py - Simulates full flow\n   - adk/research/mcp_test_client.py - Tests MCP protocol\n   - adk/research/litellm_router_test.py - Tests LiteLLM routing\n   - adk/research/adk_tool_validator.py - Validates each ADK tool\n\n4. IMPLEMENT the complete integration:\n   - ADK tools exposed via MCP server\n   - MCP server registered in LiteLLM as a provider\n   - LiteLLM routes ADK tool calls appropriately\n   - All models (Claude, GPT, Gemini) can use ADK tools\n\n5. DOCUMENT the exact flow:\n   User → Claude → MCP → LiteLLM → ADK Gateway → Google APIs → Response\n\nRESEARCH REQUIREMENTS:\n- Find exact MCP message format for tool calls\n- Determine how LiteLLM handles custom providers\n- Test Vertex AI authentication methods\n- Verify streaming works through entire chain\n- Simulate failures and implement retries",
+  
+  "implementation_steps": {
+    "step_1_research": {
+      "description": "Research and document integration requirements",
+      "deliverables": [
+        "adk/docs/mcp_protocol_analysis.md",
+        "adk/docs/litellm_custom_provider_guide.md",
+        "adk/docs/adk_tool_catalog.md",
+        "adk/docs/integration_architecture.md"
+      ]
+    },
+    
+    "step_2_simulate": {
+      "description": "Create simulators for each component",
+      "deliverables": [
+        "adk/simulators/mock_adk_server.py",
+        "adk/simulators/mock_mcp_client.py",
+        "adk/simulators/mock_litellm_gateway.py",
+        "adk/simulators/integration_test_suite.py"
+      ]
+    },
+    
+    "step_3_implement": {
+      "description": "Build the actual integration",
+      "deliverables": [
+        "adk/mcp_adk_server.py - Full MCP server with ADK tools",
+        "adk/litellm_adk_provider.py - LiteLLM provider for ADK",
+        "adk/unified_gateway.py - Single gateway for all access",
+        "adk/tool_registry_loader.py - Load all ADK tools"
+      ]
+    },
+    
+    "step_4_test": {
+      "description": "Comprehensive testing",
+      "test_scenarios": [
+        "Claude calls Gemini through MCP+LiteLLM",
+        "GPT-4 uses Google Search via ADK",
+        "Gemini accesses Vision API through unified gateway",
+        "Stress test with 100 concurrent tool calls",
+        "Failover testing between models"
+      ]
+    }
+  },
+  
+  "critical_integration_points": {
+    "mcp_server_config": {
+      "name": "adk-mcp-server",
+      "version": "1.0.0",
+      "protocol": "mcp/1.0",
+      "capabilities": {
+        "tools": true,
+        "streaming": true,
+        "functions": true
+      }
+    },
+    
+    "litellm_provider_config": {
+      "provider_name": "adk_mcp",
+      "supported_models": ["adk/*", "google/*"],
+      "capabilities": ["chat", "completion", "tools", "vision"],
+      "authentication": "vertex_ai"
+    },
+    
+    "tool_routing": {
+      "adk_tools": "Route through MCP to ADK gateway",
+      "native_tools": "Direct to tool implementation",
+      "external_apis": "Through appropriate gateway"
+    }
+  }
+}
