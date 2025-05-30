@@ -64,13 +64,20 @@
     }
   },
   
+  "CRITICAL_SANDBOX_NOTICE": {
+    "warning": "YOU ARE IN A SANDBOXED ENVIRONMENT - NO DOCKER, NO POSTGRESQL, NO NETWORK",
+    "solution": "SIMULATE EVERYTHING - Read SIMULATE_EVERYTHING.md FIRST",
+    "available": ["Python", "Node.js", "SQLite in-memory", "File I/O"],
+    "not_available": ["Docker", "PostgreSQL server", "External APIs", "Network calls"]
+  },
+  
   "quick_start": {
-    "step_1": "Install dependencies from sandbox-install-commands.txt",
-    "step_2": "Create virtual environment if needed",
-    "step_3": "Read all specification files",
-    "step_4": "Research optimal LiteLLM integration approach",
-    "step_5": "Build everything in parallel",
-    "step_6": "Create startup.py for one-command launch"
+    "step_1": "READ SIMULATE_EVERYTHING.md - Understand sandbox constraints",
+    "step_2": "Install dependencies from sandbox-install-commands.txt",
+    "step_3": "Create database simulator using SQLite in-memory or dicts",
+    "step_4": "Mock all external services (LiteLLM, ADK, etc)",
+    "step_5": "Build everything with simulated backends",
+    "step_6": "Test complete flow in-memory without external calls"
   },
   
   "files_to_read": [
