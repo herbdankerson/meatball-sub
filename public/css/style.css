@@ -1,0 +1,56 @@
+body {
+  font-family: Arial, sans-serif;
+  margin: 0;
+  padding: 0;
+  background: #f6f6f6;
+}
+.container, main {
+  width: 90%;
+  max-width: 800px;
+  margin: auto;
+}
+header {
+  background: #333;
+  color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px;
+}
+.logo {
+  height: 40px;
+}
+form input {
+  display: block;
+  margin: 10px 0;
+  padding: 8px;
+  width: 100%;
+}
+button {
+  padding: 8px 16px;
+  margin: 5px 0;
+}
+.error {
+  color: red;
+}
+.product-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+.product {
+  border: 1px solid #ccc;
+  padding: 10px;
+  width: calc(50% - 10px);
+  background: #fff;
+}
+.product img {
+  max-width: 100%;
+  height: auto;
+}
+#cartSection {
+  margin-top: 20px;
+  background: #fff;
+  padding: 10px;
+  border: 1px solid #ccc;
+}
